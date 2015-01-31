@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   resources :answers
 
-  resources :questions, except: :index
+  resources :questions, except: :index do
+    get :status, on: :member
+  end
 
   resources :quiz_runs
 

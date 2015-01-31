@@ -1,5 +1,6 @@
 module ApplicationHelper
-  def question_quota_met?
-    @questions.count >= 5
+  def can_make_quiz?
+    #answers =
+    @questions.count >= 5# &&
   end
 end

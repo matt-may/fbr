@@ -6,9 +6,19 @@
 <p>
   <%= link_to '[Edit Question]', edit_question_path(@question) %> <%= @question.prompt %>
 </p>
+<% unless @question.enough_answers? %>
+    <p class="warning" id="enough_answers">
+      > Add at least 3 answers to use this question in a quiz run.
+    </p>
+<% end %>
+<% unless @question.has_correct_answer? %>
+    <p class="warning" id="has_correct_answer">
+      > Add a correct answer to use this question in a quiz run.
+    </p>
+<% end %>
 <hr>
 
-<div id="answers-container" style="margin-bottom:25px;">
+<div id="answers-container" class="container" style="<%= display_answer_container? %>">
   <h2>Answers</h2>
   <table id="answers">
     <thead>
@@ -32,7 +42,7 @@
   </table>
 </div>
 
-<p id="alert" style="color:red;"></p>
+<p id="alert" class="alert"></p>
 
 <fieldset>
   <h3 style="color:green;">Add New Answer</h3>
@@ -70,16 +80,26 @@
 <script>
     $(document).ready(function(){
         $("#new_answer").on("ajax:success", function(e, data, status, xhr) {
+            $.get("<%= status_question_path(@question) %>", function(status) {
+                status.enough_answers ? $("#enough_answers").hide() : $("#enough_answers").show()
+                status.has_correct_answer ? $("#has_correct_answer").hide() : $("#has_correct_answer").show();
+            });
+
+            $("#answers-container").show();
             var tbody = $("#answers tbody");
-            tbody.append('<tr>');
-            tbody.append('<td>' + data.description + '</td>');
-            tbody.append('<td>' + data.correct + '</td>');
-            tbody.append('<td>' + "<a href='/answers/" + data.id + "/edit'>Edit" + '</a></td>');
-            tbody.append('<td>' + "<a href='/answers/" + data.id + "' data-method='delete'>Destroy" + '</a></td>');
-            tbody.append('</tr>');
+            appendAnswer(tbody, data);
         }).on("ajax:error", function(e, xhr, status, error) {
             $("#alert").html('There were one or more errors when adding the answer: ');
             $("#alert").append(xhr.responseText);
         });
     });
+
+    function appendAnswer(tbody, data) {
+        tbody.append('<tr>');
+        tbody.append('<td>' + data.description + '</td>');
+        tbody.append('<td>' + data.correct + '</td>');
+        tbody.append('<td>' + "<a href='/answers/" + data.id + "/edit'>Edit" + '</a></td>');
+        tbody.append('<td>' + "<a href='/answers/" + data.id + "' data-method='delete'>Destroy" + '</a></td>');
+        tbody.append('</tr>');
+    }
 </script>

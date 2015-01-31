@@ -28,7 +28,7 @@ class AnswersController < ApplicationController
     @answer = Answer.new(answer_params)
 
     if @answer.save
-      render json: @answer.to_json
+      render json: @answer.to_json, ya: 'helos'
     else
       messages = @answer.errors.full_messages.join("; ")
       render json: messages, status: :unprocessable_entity

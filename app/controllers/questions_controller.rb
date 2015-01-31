@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:show, :edit, :update, :destroy, :status]
 
   # GET /questions/1
   # GET /questions/1.json
@@ -55,6 +55,13 @@ class QuestionsController < ApplicationController
       format.html { redirect_to quiz_runs_url, notice: 'Question was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def status
+    enough_answers = @question.enough_answers?
+    has_correct_answer = @question.has_correct_answer?
+
+    render json: { enough_answers: enough_answers, has_correct_answer: has_correct_answer }
   end
 
   private
