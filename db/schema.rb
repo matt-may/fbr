@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131011701) do
+ActiveRecord::Schema.define(version: 20150131162527) do
 
   create_table "answers", force: true do |t|
     t.text     "description"
@@ -24,12 +24,17 @@ ActiveRecord::Schema.define(version: 20150131011701) do
 
   create_table "questions", force: true do |t|
     t.text     "prompt"
-    t.integer  "quiz_run_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "questions", ["quiz_run_id"], name: "index_questions_on_quiz_run_id"
+  create_table "questions_quiz_runs", force: true do |t|
+    t.integer "question_id"
+    t.integer "quiz_run_id"
+  end
+
+  add_index "questions_quiz_runs", ["question_id"], name: "index_questions_quiz_runs_on_question_id"
+  add_index "questions_quiz_runs", ["quiz_run_id"], name: "index_questions_quiz_runs_on_quiz_run_id"
 
   create_table "quiz_runs", force: true do |t|
     t.string   "name"
