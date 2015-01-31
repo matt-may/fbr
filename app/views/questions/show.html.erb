@@ -80,6 +80,9 @@
 <script>
     $(document).ready(function(){
         $("#new_answer").on("ajax:success", function(e, data, status, xhr) {
+            // Set the alert element to empty
+            $("#alert").html('');
+
             // Get the current question 'status', which tells whether it's ready
             // to be used for a quiz, and insert it into the page with each request
             $.get("<%= status_question_path(@question) %>", function(status) {
@@ -94,7 +97,9 @@
             // Show the table with all answers in it
             $("#answers-container").show();
 
+            // Retrieve the tbody from the answers table
             var tbody = $("#answers tbody");
+
             // Append the result (which should be the newest answer
             appendAnswer(tbody, data);
         }).on("ajax:error", function(e, xhr, status, error) {
