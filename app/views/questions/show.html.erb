@@ -8,12 +8,12 @@
 </p>
 <% unless @question.enough_answers? %>
     <p class="warning" id="enough_answers">
-      > Add at least 3 answers to use this question in a quiz run.
+      > Add at least 3 answers to use this question in a quiz.
     </p>
 <% end %>
 <% unless @question.has_correct_answer? %>
     <p class="warning" id="has_correct_answer">
-      > Add a correct answer to use this question in a quiz run.
+      > Add a correct answer to use this question in a quiz.
     </p>
 <% end %>
 <hr>
@@ -80,15 +80,25 @@
 <script>
     $(document).ready(function(){
         $("#new_answer").on("ajax:success", function(e, data, status, xhr) {
+            // Get the current question 'status', which tells whether it's ready
+            // to be used for a quiz, and insert it into the page with each request
             $.get("<%= status_question_path(@question) %>", function(status) {
                 status.enough_answers ? $("#enough_answers").hide() : $("#enough_answers").show()
                 status.has_correct_answer ? $("#has_correct_answer").hide() : $("#has_correct_answer").show();
             });
 
+            // Set the text input field to empty, and the select tag back to false
+            $(this).find("input[type=text], textarea").val("");
+            $(this).find("select").val("false");
+
+            // Show the table with all answers in it
             $("#answers-container").show();
+
             var tbody = $("#answers tbody");
+            // Append the result (which should be the newest answer
             appendAnswer(tbody, data);
         }).on("ajax:error", function(e, xhr, status, error) {
+            // If there's an error, insert it into the page
             $("#alert").html('There were one or more errors when adding the answer: ');
             $("#alert").append(xhr.responseText);
         });

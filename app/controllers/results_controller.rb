@@ -20,8 +20,7 @@ class ResultsController < ApplicationController
     respond_to do |format|
       if @result.save
         page = params[:page].to_i
-        question_count = @result.test.quiz_run.questions.count
-        new_page = (page == question_count) ? page : page+1
+        new_page = (page == 5) ? page : page+1
 
         @result.update_attribute :expected_answer_id, @result.question.correct_answer.id
 

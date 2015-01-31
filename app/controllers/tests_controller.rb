@@ -6,7 +6,8 @@ class TestsController < ApplicationController
   # GET /tests/1.json
   def show
     @result = Result.new
-    @questions = @quiz_run.questions.paginate(:page => params[:page], :per_page => 1)
+    questions = @quiz_run.questions
+    @questions = questions.offset(rand(questions.count)).paginate(:page => params[:page], :per_page => 1, :total_entries => 5)
   end
 
   # GET /tests/new
