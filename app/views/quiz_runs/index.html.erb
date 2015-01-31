@@ -1,10 +1,14 @@
 <h1>Welcome to QuizRun</h1>
 <hr>
 
+<% unless question_quota_met? %>
 <p>Just getting started? Add at least 5 questions to unlock the ability to make a quiz.</p>
+<% else %>
+<p>Quiz ability unlocked. Create a new Quiz Run below.</p>
+<% end %>
 
 <% unless @questions.empty? %>
-    <h2>Questions</h2>
+    <h2 style="color:blue;">Questions</h2>
 
     <table>
       <thead>
@@ -31,7 +35,8 @@
 <%= link_to 'Create New Question', new_question_path %>
 
 <% if question_quota_met? %>
-    <h2>Quiz Runs</h2>
+    <div style="height:50px;"></div>
+    <h2 style="color:green;">Quiz Runs</h2>
 
     <% unless @quiz_runs.empty? %>
         <table>
@@ -58,5 +63,5 @@
         <br>
     <% end %>
 
-    <%= link_to 'Create New Quiz run', new_quiz_run_path %>
+    <%= link_to 'Create New Quiz Run', new_quiz_run_path %>
 <% end %>

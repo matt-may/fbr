@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :answers
 
-  resources :questions
+  resources :questions, except: :index
 
   resources :quiz_runs
 

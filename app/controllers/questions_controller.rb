@@ -1,12 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
-  # GET /questions
-  # GET /questions.json
-  def index
-    @questions = Question.all
-  end
-
   # GET /questions/1
   # GET /questions/1.json
   def show
@@ -56,7 +50,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url, notice: 'Question was successfully destroyed.' }
+      format.html { redirect_to quiz_runs_url, notice: 'Question was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
