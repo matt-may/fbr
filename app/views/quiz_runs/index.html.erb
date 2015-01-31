@@ -43,7 +43,7 @@
                 <td><%= link_to 'Show', quiz_run %></td>
                 <td><%= link_to 'Edit', edit_quiz_run_path(quiz_run) %></td>
                 <td><%= link_to 'Destroy', quiz_run, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                <td><%= link_to('Take Test', "#") if quiz_run.ready? %></td>
+                <td><%= link_to('Take Test', new_test_path(quiz_run_id: quiz_run.id)) if quiz_run.ready? %></td>
               </tr>
           <% end %>
           </tbody>

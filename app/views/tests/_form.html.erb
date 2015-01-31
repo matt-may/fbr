@@ -11,11 +11,9 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :quiz_run_id %><br>
-    <%= f.text_field :quiz_run_id %>
-  </div>
+  <%= f.hidden_field :quiz_run_id, value: params[:quiz_run_id] || @quiz_run.id %>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Take Test" %>
   </div>
 <% end %>
