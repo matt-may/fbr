@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131165444) do
+ActiveRecord::Schema.define(version: 20150131202214) do
 
   create_table "answers", force: true do |t|
     t.text     "description"
@@ -46,14 +46,22 @@ ActiveRecord::Schema.define(version: 20150131165444) do
 
   create_table "results", force: true do |t|
     t.integer  "question_id"
-    t.integer  "quiz_run_id"
     t.integer  "expected_answer_id"
     t.integer  "actual_answer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "test_id"
   end
 
   add_index "results", ["question_id"], name: "index_results_on_question_id"
-  add_index "results", ["quiz_run_id"], name: "index_results_on_quiz_run_id"
+  add_index "results", ["test_id"], name: "index_results_on_test_id"
+
+  create_table "tests", force: true do |t|
+    t.integer  "quiz_run_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tests", ["quiz_run_id"], name: "index_tests_on_quiz_run_id"
 
 end

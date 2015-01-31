@@ -34,3 +34,6 @@ table td, table th{
 .success {
     color: green;
 }
+.padded {
+    padding: 25px 0;
+}

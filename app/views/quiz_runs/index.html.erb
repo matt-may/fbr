@@ -1,10 +1,10 @@
-<h1>Welcome to QuizRun</h1>
+<h1>Welcome to Quiz</h1>
 <hr>
 
 <% unless can_make_quiz? %>
-<p>Just getting started? Add at least 5 questions (each with at least 3 answers) to unlock the ability to make a quiz.</p>
+    <p>Just getting started? Add at least 5 questions (each with at least 3 answers) to unlock the ability to make a quiz.</p>
 <% else %>
-<p>Quiz ability unlocked. Create a new Quiz Run below.</p>
+    <p>Quiz ability unlocked. Create a new quiz below.</p>
 <% end %>
 
 <% unless @questions.empty? %>
@@ -30,26 +30,20 @@
 
 <% if can_make_quiz? %>
     <div style="height:50px;"></div>
-    <h2 style="color:green;">Quiz Runs</h2>
+    <h2 style="color:green;">Quizzes</h2>
 
     <% unless @quiz_runs.empty? %>
         <table>
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th colspan="3"></th>
-          </tr>
-          </thead>
-
           <tbody>
           <% @quiz_runs.each do |quiz_run| %>
               <tr>
                 <td><%= quiz_run.name %></td>
                 <td><%= quiz_run.description %></td>
+                <td><%= render_status(quiz_run) %></td>
                 <td><%= link_to 'Show', quiz_run %></td>
                 <td><%= link_to 'Edit', edit_quiz_run_path(quiz_run) %></td>
                 <td><%= link_to 'Destroy', quiz_run, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <td><%= link_to('Take Test', "#") if quiz_run.ready? %></td>
               </tr>
           <% end %>
           </tbody>
@@ -57,5 +51,5 @@
         <br>
     <% end %>
 
-    <%= link_to 'Create New Quiz Run', new_quiz_run_path %>
+    <%= link_to 'Create New Quiz', new_quiz_run_path %>
 <% end %>

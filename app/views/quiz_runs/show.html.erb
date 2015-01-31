@@ -4,7 +4,7 @@
 
 <h1><%= @quiz_run.name %></h1>
 <p>
-  <%= link_to '[Edit Quiz Run]', edit_quiz_run_path(@quiz_run) %>
+  <%= link_to '[Edit Quiz]', edit_quiz_run_path(@quiz_run) %>
 </p>
 <p>
   <strong>Description: </strong>
@@ -14,6 +14,11 @@
     <p class="warning" id="enough_questions">
       > Add at least 5 questions to publish this quiz run.
     </p>
+<% else %>
+    <div class="container">
+      <h3 class="success">Quiz is Ready!</h3>
+      <%= link_to "Take Quiz", "#" %>
+    </div>
 <% end %>
 
 <fieldset>
@@ -32,19 +37,16 @@
       <% end %>
 
       <div class="field">
-        <%= f.label "Questions" %><br />
         <% Question.all.each do |question| %>
-            <%# if question.ready? %>
-            <%= check_box_tag "quiz_run[question_ids][]", question.id,
-                              @quiz_run.question_ids.include?(question.id) %>
-            <%= label_tag question.prompt, :class => "check_box_label" %>
-            <% puts "hello" %>
-            <%# end %>
+            <% if question.ready? %>
+            <p>
+              <%= check_box_tag "quiz_run[question_ids][]", question.id,
+                                @quiz_run.question_ids.include?(question.id) %>
+              <%= link_to question.prompt, question, target: "_new" %>
+            </p>
+            <% end %>
         <% end %>
       </div>
-      </div>
-
-
 
       <div class="actions">
         <%= f.submit %>
