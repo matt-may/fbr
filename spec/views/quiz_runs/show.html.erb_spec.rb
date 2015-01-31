@@ -13,4 +13,9 @@ RSpec.describe "quiz_runs/show", :type => :view do
     expect(rendered).to match(/Name/)
     expect(rendered).to match(/MyText/)
   end
+
+  it "has add new question link" do
+    render
+    assert_select "a", :text => "Add New Question"
+  end
 end
