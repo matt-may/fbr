@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:show, :edit, :update, :destroy]
 
   # GET /answers
   # GET /answers.json
@@ -26,14 +27,10 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
 
-    respond_to do |format|
-      if @answer.save
-        format.html { redirect_to @answer, notice: 'Answer was successfully created.' }
-        format.json { render :show, status: :created, location: @answer }
-      else
-        format.html { render :new }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
-      end
+    if @answer.save
+      render json: @answer.to_json
+    else
+      render json: @answer.errors, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +39,7 @@ class AnswersController < ApplicationController
   def update
     respond_to do |format|
       if @answer.update(answer_params)
-        format.html { redirect_to @answer, notice: 'Answer was successfully updated.' }
+        format.html { redirect_to @question, notice: 'Answer was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit }
@@ -56,7 +53,7 @@ class AnswersController < ApplicationController
   def destroy
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to answers_url, notice: 'Answer was successfully destroyed.' }
+      format.html { redirect_to @question, notice: 'Answer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,8 +64,12 @@ class AnswersController < ApplicationController
       @answer = Answer.find(params[:id])
     end
 
+    def set_question
+      @question = @answer.question
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def answer_params
-      params.require(:answer).permit(:description, :question_id)
+      params.require(:answer).permit(:description, :question_id, :correct)
     end
 end

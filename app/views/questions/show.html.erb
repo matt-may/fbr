@@ -1,9 +1,81 @@
 <p id="notice"><%= notice %></p>
+<%= link_to 'Back to Index', quiz_runs_path %>
 
+<h2>Question</h2>
 <p>
-  <strong>Prompt:</strong>
-  <%= @question.prompt %>
+  <%= link_to '[Edit Question]', edit_question_path(@question) %> <%= @question.prompt %>
 </p>
+<hr>
 
-<%= link_to 'Edit', edit_question_path(@question) %> |
-<%= link_to 'Back', quiz_runs_path %>
+<div id="answers-container" style="margin-bottom:25px;">
+  <h2>Answers</h2>
+  <table id="answers">
+    <thead>
+    <tr>
+      <th>Description</th>
+      <th>Correct Answer?</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @answers.each do |answer| %>
+        <tr>
+          <td><%= answer.description %></td>
+          <td><%= answer.correct %></td>
+          <td><%= link_to 'Edit', edit_answer_path(answer) %></td>
+          <td><%= link_to 'Destroy', answer, method: :delete %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<fieldset>
+  <h3 style="color:green;">Add New Answer</h3>
+  <%= form_for(@answer, remote: true, html: { id: "new_answer" } ) do |f| %>
+      <% if @answer.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+
+            <ul>
+              <% @answer.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :answer_description %><br>
+        <%= f.text_area :description %>
+      </div>
+
+      <div class="field">
+        <%= f.label :answer_is_correct? %><br>
+        <%= f.select :correct, options_for_select([true, false], selected: false) %>
+      </div>
+
+      <%= f.hidden_field :question_id, value: @question.id %>
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+  <% end %>
+</fieldset>
+
+<script>
+    $(document).ready(function(){
+        $("#new_answer").on("ajax:success", function(e, data, status, xhr) {
+            var tbody = $("#answers tbody");
+            tbody.append('<tr>');
+            tbody.append('<td>' + data.description + '</td>');
+            tbody.append('<td>' + data.correct + '</td>');
+            tbody.append('<td>' + "<a href='/answers/" + data.id + "/edit'>Edit" + '</a></td>');
+            tbody.append('<td>' + "<a href='/answers/" + data.id + "' data-method='delete'>Destroy" + '</a></td>');
+            tbody.append('</tr>');
+        }).on("ajax:error", function(e, xhr, status, error) {
+            console.log("Error");
+        });
+    });
+</script>

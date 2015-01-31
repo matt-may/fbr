@@ -1,14 +1,5 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @answer.description %>
-</p>
-
-<p>
-  <strong>Question:</strong>
-  <%= @answer.question %>
-</p>
-
-<%= link_to 'Edit', edit_answer_path(@answer) %> |
-<%= link_to 'Back', answers_path %>
+<tr>
+  <td><%= @answer.description %></td>
+  <td><%= @answer.correct %></td>
+  <td><%= link_to 'Edit', edit_answer_path(@answer) %></td>
+</tr>
