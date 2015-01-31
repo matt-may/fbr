@@ -5,6 +5,7 @@ class QuizRunsController < ApplicationController
   # GET /quiz_runs.json
   def index
     @quiz_runs = QuizRun.all
+    @questions = Question.all
   end
 
   # GET /quiz_runs/1

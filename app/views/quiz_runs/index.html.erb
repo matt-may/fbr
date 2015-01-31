@@ -1,27 +1,62 @@
-<h1>Listing quiz_runs</h1>
+<h1>Welcome to QuizRun</h1>
+<hr>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<p>Just getting started? Add at least 5 questions to unlock the ability to make a quiz.</p>
 
-  <tbody>
-    <% @quiz_runs.each do |quiz_run| %>
+<% unless @questions.empty? %>
+    <h2>Questions</h2>
+
+    <table>
+      <thead>
       <tr>
-        <td><%= quiz_run.name %></td>
-        <td><%= quiz_run.description %></td>
-        <td><%= link_to 'Show', quiz_run %></td>
-        <td><%= link_to 'Edit', edit_quiz_run_path(quiz_run) %></td>
-        <td><%= link_to 'Destroy', quiz_run, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Prompt</th>
+        <th colspan="3"></th>
       </tr>
+      </thead>
+
+      <tbody>
+      <% @questions.each do |question| %>
+          <tr>
+            <td><%= question.prompt %></td>
+            <td><%= link_to 'Show', question %></td>
+            <td><%= link_to 'Edit', edit_question_path(question) %></td>
+            <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <br>
+<% end %>
+
+<%= link_to 'Create New Question', new_question_path %>
+
+<% if question_quota_met? %>
+    <h2>Quiz Runs</h2>
+
+    <% unless @quiz_runs.empty? %>
+        <table>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th colspan="3"></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <% @quiz_runs.each do |quiz_run| %>
+              <tr>
+                <td><%= quiz_run.name %></td>
+                <td><%= quiz_run.description %></td>
+                <td><%= link_to 'Show', quiz_run %></td>
+                <td><%= link_to 'Edit', edit_quiz_run_path(quiz_run) %></td>
+                <td><%= link_to 'Destroy', quiz_run, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <br>
     <% end %>
-  </tbody>
-</table>
 
-<br>
-
-<%= link_to 'New Quiz run', new_quiz_run_path %>
+    <%= link_to 'Create New Quiz run', new_quiz_run_path %>
+<% end %>

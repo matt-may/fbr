@@ -2,21 +2,17 @@ require 'rails_helper'
 
 RSpec.describe "quiz_runs/index", :type => :view do
   before(:each) do
+    assign(:questions, [
+       Question.create!(
+         :prompt => "How much wood did a wood chuck chuck?"
+       )
+    ])
     assign(:quiz_runs, [
-      QuizRun.create!(
-        :name => "Name",
-        :description => "MyText"
-      ),
-      QuizRun.create!(
-        :name => "Name",
-        :description => "MyText"
-      )
     ])
   end
 
-  it "renders a list of quiz_runs" do
+  it "renders a list of questions" do
     render
-    assert_select "tr>td", :text => "Name".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
+    assert_select "tr>td", :text => "How much wood did a wood chuck chuck?".to_s, :count => 1
   end
 end
