@@ -7,18 +7,9 @@ class ResultsController < ApplicationController
     @results = Result.all
   end
 
-  # GET /results/1
-  # GET /results/1.json
-  def show
-  end
-
   # GET /results/new
   def new
     @result = Result.new
-  end
-
-  # GET /results/1/edit
-  def edit
   end
 
   # POST /results
@@ -28,36 +19,24 @@ class ResultsController < ApplicationController
 
     respond_to do |format|
       if @result.save
-        format.html { redirect_to @result, notice: 'Result was successfully created.' }
+        page = params[:page].to_i
+        question_count = @result.test.quiz_run.questions.count
+        new_page = (page == question_count) ? page : page+1
+
+        @result.update_attribute :expected_answer_id, @result.question.correct_answer.id
+
+        msg = if @result.expected_answer == @result.actual_answer
+                "Congrats! Your answer was correct."
+              else
+                "We're sorry, your answer was wrong. Correct answer: '#{@result.actual_answer.description}'."
+              end
+
+        format.html { redirect_to test_path(@result.test, page: new_page), notice: msg }
         format.json { render :show, status: :created, location: @result }
       else
         format.html { render :new }
         format.json { render json: @result.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /results/1
-  # PATCH/PUT /results/1.json
-  def update
-    respond_to do |format|
-      if @result.update(result_params)
-        format.html { redirect_to @result, notice: 'Result was successfully updated.' }
-        format.json { render :show, status: :ok, location: @result }
-      else
-        format.html { render :edit }
-        format.json { render json: @result.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /results/1
-  # DELETE /results/1.json
-  def destroy
-    @result.destroy
-    respond_to do |format|
-      format.html { redirect_to results_url, notice: 'Result was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
@@ -69,6 +48,6 @@ class ResultsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def result_params
-      params.require(:result).permit(:question_id, :quiz_run_id, :expected_answer_id, :actual_answer_id)
+      params.require(:result).permit(:question_id, :test_id, :expected_answer_id, :actual_answer_id)
     end
 end

@@ -13,4 +13,8 @@ class Question < ActiveRecord::Base
   def has_correct_answer?
     self.answers.any? { |answer| answer.correct }
   end
+
+  def correct_answer
+    self.answers.where(correct: true).first
+  end
 end

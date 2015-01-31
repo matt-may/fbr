@@ -5,6 +5,8 @@ class TestsController < ApplicationController
   # GET /tests/1
   # GET /tests/1.json
   def show
+    @result = Result.new
+    @questions = @quiz_run.questions.paginate(:page => params[:page], :per_page => 1)
   end
 
   # GET /tests/new

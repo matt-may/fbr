@@ -1,2 +1,61 @@
 <p id="notice"><%= notice %></p>
 
+<% @questions.each do |question| %>
+    <p>Question: <%= question.prompt %></p>
+    <% unless already_answered?(question) %>
+    <%= form_for(@result) do |f| %>
+        <% if @result.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@result.errors.count, "error") %> prohibited this result from being saved:</h2>
+
+              <ul>
+                <% @result.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <%= f.hidden_field :question_id, value: question.id %>
+        <%= f.hidden_field :test_id, value: @test.id %>
+
+        <%= hidden_field_tag :page, params[:page] || 1 %>
+
+        <% question.answers.each do |answer| %>
+            <%= f.radio_button :actual_answer_id, answer.id %>
+            <%= answer.description %><br>
+        <% end %>
+
+        <div class="actions">
+          <%= f.submit "Submit Answer" %>
+        </div>
+    <% end %>
+    <% else %>
+    <p>Question already answered.</p>
+    <% end %>
+<% end %>
+
+<%= will_paginate @questions %>
+
+<% if @test.results.count == @test.quiz_run.questions.count %>
+<h2>Your Results</h2>
+<table>
+  <thead>
+    <th>Question</th>
+    <th>Your Answer</th>
+    <th>Actual Answer</th>
+    <th>Result</th>
+  </thead>
+  <% @test.results.each do |result| %>
+    <tr>
+      <td><%= result.question.prompt %></td>
+      <td><%= result.actual_answer.description %></td>
+      <td><%= result.expected_answer.description %></td>
+      <td><%= result.actual_answer == result.expected_answer ? 'Correct' : 'False' %></td>
+    </tr>
+  <% end %>
+</table>
+<div class="padded">
+  <%= link_to 'Home', quiz_runs_path %>
+</div>
+<% end %>
