@@ -30,7 +30,8 @@ class AnswersController < ApplicationController
     if @answer.save
       render json: @answer.to_json
     else
-      render json: @answer.errors, status: :unprocessable_entity
+      messages = @answer.errors.full_messages.join("; ")
+      render json: messages, status: :unprocessable_entity
     end
   end
 
