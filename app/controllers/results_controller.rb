@@ -36,7 +36,7 @@ class ResultsController < ApplicationController
         format.html { redirect_to test_path(@result.test, page: new_page), notice: msg }
         format.json { render :show, status: :created, location: @result }
       else
-        format.html { render :new }
+        format.html { redirect_to test_path(@result.test, page: page), notice: 'Submit an answer.' }
         format.json { render json: @result.errors, status: :unprocessable_entity }
       end
     end
