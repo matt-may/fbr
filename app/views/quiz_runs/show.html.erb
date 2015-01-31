@@ -1,15 +1,57 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @quiz_run.name %>
-</p>
+<%= link_to 'Back to Index', quiz_runs_path %>
 
+<h1><%= @quiz_run.name %></h1>
 <p>
-  <strong>Description:</strong>
+  <%= link_to '[Edit Quiz Run]', edit_quiz_run_path(@quiz_run) %>
+</p>
+<p>
+  <strong>Description: </strong>
   <%= @quiz_run.description %>
 </p>
+<% unless @quiz_run.enough_questions? %>
+    <p class="warning" id="enough_questions">
+      > Add at least 5 questions to publish this quiz run.
+    </p>
+<% end %>
+
+<fieldset>
+  <h3>Add Questions</h3>
+  <%= form_for(@quiz_run) do |f| %>
+      <% if @quiz_run.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@quiz_run.errors.count, "error") %> prohibited this quiz_run from being saved:</h2>
+
+            <ul>
+              <% @quiz_run.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label "Questions" %><br />
+        <% Question.all.each do |question| %>
+            <%# if question.ready? %>
+            <%= check_box_tag "quiz_run[question_ids][]", question.id,
+                              @quiz_run.question_ids.include?(question.id) %>
+            <%= label_tag question.prompt, :class => "check_box_label" %>
+            <% puts "hello" %>
+            <%# end %>
+        <% end %>
+      </div>
+      </div>
+
+
+
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+  <% end %>
+
+</fieldset>
 
 <%= link_to 'Edit', edit_quiz_run_path(@quiz_run) %> |
-<%= link_to 'Add New Question', questions_path %> |
 <%= link_to 'Back', quiz_runs_path %>

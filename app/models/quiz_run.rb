@@ -5,4 +5,8 @@ class QuizRun < ActiveRecord::Base
   # Require a name and description
   validates :name, presence: true
   validates :description, presence: true
+
+  def enough_questions?
+    self.questions.count >= 5
+  end
 end
