@@ -58,6 +58,8 @@ class QuestionsController < ApplicationController
   end
 
   def status
+    # A status indicator action that tells the view whether the current question is
+    # ready for a quiz
     enough_answers = @question.enough_answers?
     has_correct_answer = @question.has_correct_answer?
 

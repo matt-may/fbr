@@ -2,9 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "tests/new", :type => :view do
   before(:each) do
-    assign(:test, Test.new(
-      :quiz_run => nil
-    ))
+    @quiz_run = QuizRun.create! name: "Run", description: "Description"
+    assign(:test, Test.new(:quiz_run => @quiz_run))
   end
 
   it "renders new test form" do

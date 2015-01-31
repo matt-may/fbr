@@ -1,8 +1,12 @@
 class Answer < ActiveRecord::Base
   before_save :set_defaults
   belongs_to :question
+
+  # Custom validation methods
   validate :question_only_has_one_correct_answer
   validate :question_only_has_unique_descriptions
+
+  # Don't allow a nil or empty description
   validates :description, presence: true, allow_blank: false
 
   def question_only_has_one_correct_answer
@@ -21,6 +25,7 @@ class Answer < ActiveRecord::Base
     end
   end
 
+  # Retrieves all the other answers except the current object
   def other_answers
     answers = self.question.answers
     other_answers = answers - [self]

@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "answers/edit", :type => :view do
   before(:each) do
+    @question = Question.create! prompt: "Hello"
     @answer = assign(:answer, Answer.create!(
       :description => "MyText",
-      :question => nil
+      :question => @question
     ))
   end
 
@@ -15,7 +16,6 @@ RSpec.describe "answers/edit", :type => :view do
 
       assert_select "textarea#answer_description[name=?]", "answer[description]"
 
-      assert_select "input#answer_question_id[name=?]", "answer[question_id]"
     end
   end
 end

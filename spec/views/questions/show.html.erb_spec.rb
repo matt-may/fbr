@@ -5,6 +5,8 @@ RSpec.describe "questions/show", :type => :view do
     @question = assign(:question, Question.create!(
       :prompt => "MyText"
     ))
+    @answers = @question.answers
+    @answer = Answer.new
   end
 
   it "renders attributes in <p>" do

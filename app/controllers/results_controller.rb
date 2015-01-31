@@ -19,9 +19,12 @@ class ResultsController < ApplicationController
 
     respond_to do |format|
       if @result.save
+        # Save the page from our url params, and increment it, so the test-taker correctly
+        # receives the next page
         page = params[:page].to_i
         new_page = (page == 5) ? page : page+1
 
+        # Update the result object with the correct answer
         @result.update_attribute :expected_answer_id, @result.question.correct_answer.id
 
         msg = if @result.expected_answer == @result.actual_answer

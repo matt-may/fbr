@@ -7,6 +7,7 @@ class TestsController < ApplicationController
   def show
     @result = Result.new
     questions = @quiz_run.questions
+    # Retrieve 5 random questions, and paginate them
     @questions = questions.offset(rand(questions.count)).paginate(:page => params[:page], :per_page => 1, :total_entries => 5)
   end
 
