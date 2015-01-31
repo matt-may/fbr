@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @result.question %>
+</p>
+
+<p>
+  <strong>Quiz run:</strong>
+  <%= @result.quiz_run %>
+</p>
+
+<p>
+  <strong>Expected answer:</strong>
+  <%= @result.expected_answer_id %>
+</p>
+
+<p>
+  <strong>Actual answer:</strong>
+  <%= @result.actual_answer_id %>
+</p>
+
+<%= link_to 'Edit', edit_result_path(@result) %> |
+<%= link_to 'Back', results_path %>
